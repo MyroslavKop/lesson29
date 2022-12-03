@@ -4,32 +4,42 @@ import useCounter from "../hooks/useCounter";
 import {RepeatIcon} from "@chakra-ui/icons";
 
 const Counter = () => {
-    const {count, setCount, increment, decrement, reset, initialValue} = useCounter();
+    const {count, setCount, increment, decrement, reset, initialValue} = useCounter(1);
 
-    const handleChange = ({target: {value}}) => {
-        setCount(+value);
+    const handleChange = ({ target: { value } }) => {
+        if (value !== "" && value < initialValue) {
+            setCount(initialValue);
+            return;
+        }
+        setCount(value);
     };
 
-    if (count < 1) {
-        setCount(initialValue);
-    }
-
     return (<form>
-            <Box display="flex" alignItems="center" gap="15px" justifyContent="center" flexDirection="column">
-                <Box display="flex" alignItems="center" gap="15px" justifyContent="center">
-                    <Button onClick={increment} colorScheme="facebook">+</Button>
-                    <Input display="flex" alignItems="center" value={count} width="100px" textAlign="center"
-                           onChange={handleChange}/>
-                    <Button onClick={decrement} colorScheme="facebook" disabled={count <= initialValue}>-</Button>
-                </Box>
-                <IconButton
-                    colorScheme="pink"
-                    aria-label="Search database"
-                    onClick={reset}
-                    icon={<RepeatIcon/>}
-                />
+        <Box display="flex" alignItems="center" gap="15px" justifyContent="center" flexDirection="column">
+            <Box display="flex" alignItems="center" gap="15px" justifyContent="center">
+                <Button onClick={increment} colorScheme="facebook">+</Button>
+                <Input display="flex" alignItems="center" value={count} width="100px" textAlign="center"
+                       onChange={handleChange}/>
+                <Button onClick={decrement} colorScheme="facebook" disabled={count <= initialValue}>-</Button>
             </Box>
-        </form>);
+            <IconButton
+                colorScheme="pink"
+                aria-label="Search database"
+                onClick={reset}
+                icon={<RepeatIcon/>}
+            />
+        </Box>
+    </form>);
 };
 
 export default memo(Counter);
+
+
+
+
+
+
+
+
+
+
